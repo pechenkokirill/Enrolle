@@ -1,4 +1,5 @@
 ﻿using Enrolle.ViewModels;
+using Enrolle.Views.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -13,7 +14,11 @@ namespace Enrolle.Services
     {
         public void ConfigureServices(HostBuilderContext context, IServiceCollection serviceCollection)
         {
+            //Services
+            serviceCollection.AddSingleton<INavigation, NavigationService>();
+            //ViewModels
             serviceCollection.AddSingleton<MainViewModel>();
+            serviceCollection.AddTransient<MainPageViewModel>();
         }
     }
 }

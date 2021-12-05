@@ -37,6 +37,8 @@ namespace Enrolle
             {
                 DataContext = host.Services.GetRequiredService<MainViewModel>()
             };
+
+            MainWindow.Show();
         }
 
         protected override void OnExit(ExitEventArgs e)

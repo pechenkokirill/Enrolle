@@ -3,10 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Enrolle"
+        xmlns:vm="clr-namespace:Enrolle.ViewModels"
+        xmlns:local="clr-namespace:Enrolle" xmlns:pages="clr-namespace:Enrolle.Views.Pages"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Enrolle" Height="450" Width="800">
+    <Grid Background="{StaticResource Light}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+        <Border Grid.Row="0" Background="{StaticResource Main}" Effect="{StaticResource Shadow}">
+            <TextBlock Text="Enrolle" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+        </Border>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPage}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:MainPageViewModel}">
+                    <pages:MainPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:TablesChooseViewModel}">
+                    <pages:TablesChoosePage/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>
