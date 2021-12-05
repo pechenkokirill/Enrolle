@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Enrolle.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +16,34 @@ namespace Enrolle
     /// </summary>
     public partial class App : Application
     {
+        private IHost host;
+
+        public App()
+        {
+            IConfiguration configuration = new ServiceConfiguration();
+
+            host = Host.CreateDefaultBuilder()
+                .ConfigureServices((h,s) => configuration.ConfigureServices(h,s))
+                .Build();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            host.Start();
+
+            MainWindow = new MainWindow()
+            {
+                DataContext = host.Services.GetRequiredService<MainViewModel>()
+            };
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            host.Dispose();
+
+            base.OnExit(e);
+        }
     }
 }
