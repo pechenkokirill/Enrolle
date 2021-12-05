@@ -13,9 +13,17 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Content="Таблица 1"/>
-        <Button Grid.Column="1" Content="Таблица 2"/>
-        <Button Grid.Column="2" Content="Таблица 3"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Column="0" Grid.Row="0" Content="Абитуриенты"/>
+        <Button Grid.Column="1" Grid.Row="0" Content="Льготы"/>
+        <Button Grid.Column="2" Grid.Row="0" Content="Льготы аббитуриентов"/>
+        <Button Grid.Column="0" Grid.Row="1" Content="Отметки"/>
+        <Button Grid.Column="1" Grid.Row="1" Content="Предметы"/>
+        <Button Grid.Column="2" Grid.Row="1" Content="Специальности"/>
 
         <Grid.Resources>
             <Style TargetType="{x:Type Button}">

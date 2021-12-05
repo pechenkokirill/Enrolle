@@ -13,9 +13,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Content="Таблицы"/>
+        <Button Grid.Column="0" Content="Таблицы" Command="{Binding GoToTablesCommand}"/>
         <Button Grid.Column="1" Content="Выборки"/>
-        <Button Grid.Column="2" Content="Данные" IsEnabled="False"/>
+        <Button Grid.Column="2" Content="github.com/pechenkokirill/Enrolle" FontSize="15" IsEnabled="False"/>
 
         <Grid.Resources>
             <Style TargetType="{x:Type Button}">

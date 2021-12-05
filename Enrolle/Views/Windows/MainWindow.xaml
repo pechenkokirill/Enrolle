@@ -14,7 +14,18 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="{StaticResource Main}" Effect="{StaticResource Shadow}">
-            <TextBlock Text="Enrolle" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Button Content="Главная" Command="{Binding GoToMainCommand}" Padding="5,0,5,0" Background="{StaticResource Main}" BorderThickness="2" BorderBrush="{StaticResource MainLight}"/>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="Enrolle" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+            </Grid>
         </Border>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentPage}">
