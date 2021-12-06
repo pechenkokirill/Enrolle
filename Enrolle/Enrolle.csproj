@@ -44,4 +44,8 @@
 		<Resource Include="Fonts\NewakeFont-Demo.otf" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>

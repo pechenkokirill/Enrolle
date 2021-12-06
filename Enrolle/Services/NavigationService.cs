@@ -19,7 +19,7 @@ namespace Enrolle.Services
         public event Action<ObservableObject?>? Navigated;
 
         public void Navigate(Type view)
-        {
+        { 
             Navigated?.Invoke(serviceProvider.GetService(view) as ObservableObject);
         }
     }

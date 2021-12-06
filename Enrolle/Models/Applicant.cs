@@ -11,7 +11,7 @@ namespace Enrolle.Models
 {
     public class Applicant
     {
-        [Key]
+        public int Id { get; set; }
         public string PassportId { get; set; }
         public string SecondName { get; set; }
         public string FirstName { get; set; }

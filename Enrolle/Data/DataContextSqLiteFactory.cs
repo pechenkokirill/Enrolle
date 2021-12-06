@@ -21,7 +21,7 @@ namespace Enrolle.Data
 
         public DataContext CreateDbContext()
         {
-            if(Directory.Exists("data"))
+            if(!Directory.Exists("data"))
             {
                 Directory.CreateDirectory("data");
             }

@@ -13,7 +13,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="{StaticResource Main}" Effect="{StaticResource Shadow}">
+        <Border Grid.Row="0" Background="{StaticResource Main}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -22,9 +22,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Margin="5" Orientation="Horizontal">
-                    <Button Content="Главная" Command="{Binding GoToMainCommand}" Padding="5,0,5,0" Background="{StaticResource Main}" BorderThickness="2" BorderBrush="{StaticResource MainLight}"/>
+                    <Button Content="Главная" Command="{Binding GoToMainCommand}"/>
                 </StackPanel>
-                <TextBlock Grid.Column="1" Text="Enrolle" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <TextBlock Grid.Column="1" Text="Enrolle" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
             </Grid>
         </Border>
 
@@ -35,6 +35,27 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:TablesChooseViewModel}">
                     <pages:TablesChoosePage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:SpecialtiesViewModel}">
+                    <pages:SpecialtiesPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:SubjectsViewModel}">
+                    <pages:SubjectsPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:BenefitsViewModel}">
+                    <pages:BenefitsPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ApplicantBenefitsViewModel}">
+                    <pages:ApplicantBenefitsPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ApplicantsViewModel}">
+                    <pages:ApplicantsPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:MarksViewModel}">
+                    <pages:MarksPage/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:MarksAddViewModel}">
+                    <pages:MarksAddPage/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

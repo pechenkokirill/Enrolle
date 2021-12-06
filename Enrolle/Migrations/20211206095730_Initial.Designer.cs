@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Enrolle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211205152905_Initial")]
+    [Migration("20211206095730_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,8 +21,9 @@ namespace Enrolle.Migrations
 
             modelBuilder.Entity("Enrolle.Models.Applicant", b =>
                 {
-                    b.Property<string>("PassportId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
@@ -36,13 +37,16 @@ namespace Enrolle.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PassportId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SecondName")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("SpecializationId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("PassportId");
+                    b.HasKey("Id");
 
                     b.HasIndex("SpecializationId");
 
@@ -55,15 +59,15 @@ namespace Enrolle.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ApplicantPassportId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ApplicantId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("BenefitId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantPassportId");
+                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("BenefitId");
 
@@ -93,8 +97,8 @@ namespace Enrolle.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ApplicantPassportId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ApplicantId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("SubjectId")
                         .HasColumnType("INTEGER");
@@ -107,7 +111,7 @@ namespace Enrolle.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantPassportId");
+                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("SubjectId");
 
@@ -167,7 +171,7 @@ namespace Enrolle.Migrations
                 {
                     b.HasOne("Enrolle.Models.Applicant", "Applicant")
                         .WithMany()
-                        .HasForeignKey("ApplicantPassportId");
+                        .HasForeignKey("ApplicantId");
 
                     b.HasOne("Enrolle.Models.Benefit", "Benefit")
                         .WithMany()
@@ -182,7 +186,7 @@ namespace Enrolle.Migrations
                 {
                     b.HasOne("Enrolle.Models.Applicant", "Applicant")
                         .WithMany()
-                        .HasForeignKey("ApplicantPassportId");
+                        .HasForeignKey("ApplicantId");
 
                     b.HasOne("Enrolle.Models.Subject", "Subject")
                         .WithMany()

@@ -18,15 +18,7 @@
         <Button Grid.Column="2" Content="github.com/pechenkokirill/Enrolle" FontSize="15" IsEnabled="False"/>
 
         <Grid.Resources>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="Background" Value="{StaticResource Main}"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Effect" Value="{StaticResource Shadow}"/>
-                <Setter Property="Template" Value="{DynamicResource RoundMenuButton}"/>
-            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RaundButton}"/>
         </Grid.Resources>
     </Grid>
 </UserControl>

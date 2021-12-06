@@ -56,7 +56,9 @@ namespace Enrolle.Migrations
                 name: "Applicants",
                 columns: table => new
                 {
-                    PassportId = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PassportId = table.Column<string>(type: "TEXT", nullable: true),
                     SecondName = table.Column<string>(type: "TEXT", nullable: true),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
@@ -66,7 +68,7 @@ namespace Enrolle.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applicants", x => x.PassportId);
+                    table.PrimaryKey("PK_Applicants", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Applicants_Specializations_SpecializationId",
                         column: x => x.SpecializationId,
@@ -80,17 +82,17 @@ namespace Enrolle.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ApplicantPassportId = table.Column<string>(type: "TEXT", nullable: true),
+                    ApplicantId = table.Column<int>(type: "INTEGER", nullable: true),
                     BenefitId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicantBenefits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicantBenefits_Applicants_ApplicantPassportId",
-                        column: x => x.ApplicantPassportId,
+                        name: "FK_ApplicantBenefits_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
                         principalTable: "Applicants",
-                        principalColumn: "PassportId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ApplicantBenefits_Benefits_BenefitId",
                         column: x => x.BenefitId,
@@ -104,7 +106,7 @@ namespace Enrolle.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ApplicantPassportId = table.Column<string>(type: "TEXT", nullable: true),
+                    ApplicantId = table.Column<int>(type: "INTEGER", nullable: true),
                     SubjectId = table.Column<int>(type: "INTEGER", nullable: true),
                     Value = table.Column<int>(type: "INTEGER", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false)
@@ -113,10 +115,10 @@ namespace Enrolle.Migrations
                 {
                     table.PrimaryKey("PK_Marks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Marks_Applicants_ApplicantPassportId",
-                        column: x => x.ApplicantPassportId,
+                        name: "FK_Marks_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
                         principalTable: "Applicants",
-                        principalColumn: "PassportId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Marks_Subjects_SubjectId",
                         column: x => x.SubjectId,
@@ -125,9 +127,9 @@ namespace Enrolle.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicantBenefits_ApplicantPassportId",
+                name: "IX_ApplicantBenefits_ApplicantId",
                 table: "ApplicantBenefits",
-                column: "ApplicantPassportId");
+                column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantBenefits_BenefitId",
@@ -140,9 +142,9 @@ namespace Enrolle.Migrations
                 column: "SpecializationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Marks_ApplicantPassportId",
+                name: "IX_Marks_ApplicantId",
                 table: "Marks",
-                column: "ApplicantPassportId");
+                column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Marks_SubjectId",

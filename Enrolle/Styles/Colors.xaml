@@ -8,6 +8,6 @@
     <SolidColorBrush x:Key="Main" Color="#EB5160"/>
     <SolidColorBrush x:Key="MainLight" Color="#FFFF8F9A"/>
 
-    <DropShadowEffect x:Key="Shadow" BlurRadius="10" Direction="-90" ShadowDepth="1" Opacity="0.5"/>
+    <DropShadowEffect x:Key="Shadow" BlurRadius="10" Direction="-90" ShadowDepth="3" Opacity="0.5"/>
 
 </ResourceDictionary>
