@@ -12,27 +12,29 @@ namespace Enrolle.ViewModels
 {
     public class MarksAddViewModel : ObservableObject
     {
-        private readonly IRepository<Applicant> applicantsRepo;
-        private readonly IRepository<Subject> subjectRepo;
-        private readonly IRepository<Mark> marksRepo;
+        private readonly MarksViewModel marksViewModel;
+        private readonly BusyStore busyStore;
         private readonly INavigation navigation;
-        private Applicant applicant;
 
-        public Applicant Applicant { get => applicant; set { applicant = value; Marks = CreateMarks(); } }
-        public IEnumerable<Applicant> Applicants => new ObservableCollection<Applicant>(applicantsRepo.GetAll());
-        public IEnumerable<Mark> Marks { get; set; }
+        public Applicant? Applicant { get; set; }
+        public IEnumerable<Applicant> Applicants => marksViewModel.Applicants!.Where(x => x.Marks is null || x.Marks.Count == 0);
+        public IEnumerable<Subject> Subjects => marksViewModel.Subjects!;
+        public IEnumerable<Mark>? Marks { get; set; }
         public RelayCommand AddCommand { get; set; }
         public RelayCommand BackCommand { get; set; }
-        public MarksAddViewModel(IRepository<Applicant> applicantsRepo, IRepository<Subject> subjectRepo, IRepository<Mark> marksRepo, INavigation navigation)
+        public MarksAddViewModel(MarksViewModel marksViewModel, BusyStore busyStore, INavigation navigation)
         {
-            this.applicantsRepo = applicantsRepo;
-            this.subjectRepo = subjectRepo;
-            this.marksRepo = marksRepo;
+            this.marksViewModel = marksViewModel;
+            this.busyStore = busyStore;
             this.navigation = navigation;
-            this.subjectRepo.Load();
-            this.applicantsRepo.Load();
+            Marks = CreateMarks();
             AddCommand = new RelayCommand(Add, () => Applicant is not null);
             BackCommand = new RelayCommand(Back);
+        }
+
+        private ObservableCollection<Mark> CreateMarks()
+        {
+            return new ObservableCollection<Mark>(Subjects.Select(x => new Mark() { Subject = x, Value = 1 }));
         }
 
         private void Back()
@@ -40,23 +42,24 @@ namespace Enrolle.ViewModels
             navigation.Navigate(typeof(MarksViewModel));
         }
 
-        private IEnumerable<Mark> CreateMarks()
-        {
-            IEnumerable<Subject> subjects = subjectRepo.GetAll();
-            return new ObservableCollection<Mark>(subjects.Select(x => new Mark() { Applicant = Applicant, Subject = x }));
-        }
-
         private void Add()
         {
             var result = MessageBox.Show("Вы точно хотите добавить записи?", "", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if(result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.Yes)
             {
-                foreach (var mark in Marks)
+                using (busyStore.SetBusy())
                 {
-                    marksRepo.Add(mark);
+                    if (Marks is not null)
+                    {
+                        foreach (Mark mark in Marks)
+                        {
+                            mark.Applicant = Applicant;
+                            marksViewModel.Collection!.Add(mark);
+                        }
+                    }
                 }
 
-                navigation.Navigate(typeof(MarksViewModel));
+                BackCommand.Execute(null);
             }
         }
     }

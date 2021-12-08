@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="DataGridRow">
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="DetailsTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="Ошибки:"/>
+                                <ListView DisplayMemberPath="ErrorContent" ItemsSource="{Binding (Validation.Errors),RelativeSource={RelativeSource AncestorType=DataGridRow, Mode=FindAncestor}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

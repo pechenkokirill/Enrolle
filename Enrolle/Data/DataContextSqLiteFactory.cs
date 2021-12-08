@@ -21,20 +21,11 @@ namespace Enrolle.Data
 
         public DataContext CreateDbContext()
         {
-            if(!Directory.Exists("data"))
-            {
-                Directory.CreateDirectory("data");
-            }
-
             DbContextOptions dbContextOptions = new DbContextOptionsBuilder<DataContext>()
                 .UseSqlite(configuration.GetConnectionString("SqLite"))
                 .Options;
 
-            DataContext context = new DataContext(dbContextOptions);
-
-            context.Database.Migrate();
-
-            return context;
+            return new DataContext(dbContextOptions);
         }
     }
 }

@@ -17,14 +17,14 @@ namespace Enrolle.Services
             this.dataContext = dataContext;
         }
 
-        public void Add(ApplicantBenefit item)
+        public async Task AddAsync(ApplicantBenefit item)
         {
-            dataContext.ApplicantBenefits.Add(item);
+            await dataContext.ApplicantBenefits.AddAsync(item);
         }
 
-        public ApplicantBenefit? Get(int id)
+        public async Task AddRangeAsync(IEnumerable<ApplicantBenefit> items)
         {
-            return dataContext.ApplicantBenefits.Find(id);
+            await dataContext.ApplicantBenefits.AddRangeAsync(items);
         }
 
         public IEnumerable<ApplicantBenefit> GetAll()
@@ -32,9 +32,9 @@ namespace Enrolle.Services
             return dataContext.ApplicantBenefits.Local.ToObservableCollection();
         }
 
-        public void Load()
+        public async Task LoadAsync()
         {
-            dataContext.ApplicantBenefits.Load();
+            await dataContext.ApplicantBenefits.Include(x => x.Applicant).Include(x => x.Benefit).LoadAsync();
         }
 
         public void Remove(ApplicantBenefit item)
@@ -42,9 +42,9 @@ namespace Enrolle.Services
             dataContext.ApplicantBenefits.Remove(item);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }

@@ -17,14 +17,14 @@ namespace Enrolle.Services
             this.dataContext = dataContext;
         }
 
-        public void Add(Specialization item)
+        public async Task AddAsync(Specialization item)
         {
-            dataContext.Specializations.Add(item);
+            await dataContext.Specializations.AddAsync(item);
         }
 
-        public Specialization? Get(int id)
+        public async Task AddRangeAsync(IEnumerable<Specialization> items)
         {
-            return dataContext.Specializations.Find(id);
+            await dataContext.Specializations.AddRangeAsync(items);
         }
 
         public IEnumerable<Specialization> GetAll()
@@ -32,9 +32,9 @@ namespace Enrolle.Services
             return dataContext.Specializations.Local.ToObservableCollection();
         }
 
-        public void Load()
+        public async Task LoadAsync()
         {
-            dataContext.Specializations.Load();
+            await dataContext.Specializations.LoadAsync();
         }
 
         public void Remove(Specialization item)
@@ -42,9 +42,9 @@ namespace Enrolle.Services
             dataContext.Specializations.Remove(item);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }

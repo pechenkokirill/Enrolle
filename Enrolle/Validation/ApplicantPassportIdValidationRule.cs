@@ -12,7 +12,7 @@ using System.Windows.Data;
 
 namespace Enrolle.Validation
 {
-    public class ApplicantValidationRule : ValidationRule
+    public class ApplicantPassportIdValidationRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

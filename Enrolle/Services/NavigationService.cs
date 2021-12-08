@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace Enrolle.Services
 
         public event Action<ObservableObject?>? Navigated;
 
-        public void Navigate(Type view)
+        public void Navigate(Type viewType)
         { 
-            Navigated?.Invoke(serviceProvider.GetService(view) as ObservableObject);
+            Navigated?.Invoke(serviceProvider.GetService(viewType) as ObservableObject);
         }
     }
 }

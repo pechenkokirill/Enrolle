@@ -9,6 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="vs" Source="{Binding Collection}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Applicant"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
@@ -16,8 +24,9 @@
             <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Collection}" ColumnWidth="*" CanUserAddRows="False" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource vs}}" ColumnWidth="*" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
             <DataGrid.Resources>
+                <converters:MarkConverter x:Key="markConverter"/>
                 <Style x:Key="applicantsColumn" TargetType="ComboBox">
                     <Setter Property="ItemsSource" Value="{Binding DataContext.Applicants,RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}}"/>
                 </Style>
@@ -26,14 +35,6 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridComboBoxColumn Header="Аббитуриент" SelectedValueBinding="{Binding Applicant}">
-                    <DataGridComboBoxColumn.ElementStyle>
-                        <Style BasedOn="{StaticResource applicantsColumn}" TargetType="ComboBox"/>
-                    </DataGridComboBoxColumn.ElementStyle>
-                    <DataGridComboBoxColumn.EditingElementStyle>
-                        <Style BasedOn="{StaticResource applicantsColumn}" TargetType="ComboBox"/>
-                    </DataGridComboBoxColumn.EditingElementStyle>
-                </DataGridComboBoxColumn>
                 <DataGridComboBoxColumn Header="Предмет" SelectedValueBinding="{Binding Subject}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style BasedOn="{StaticResource subjectsColumn}" TargetType="ComboBox"/>
@@ -42,9 +43,42 @@
                         <Style BasedOn="{StaticResource subjectsColumn}" TargetType="ComboBox"/>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="Отметка" Binding="{Binding Value}"/>
-                <DataGridComboBoxColumn Header="Тип" ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItemBinding="{Binding Type}"/>
+                <DataGridTextColumn Header="Отметка" Binding="{Binding Value, Converter={StaticResource markConverter}}"/>
+                <DataGridComboBoxColumn Header="Тип" ItemsSource="{Binding Source={StaticResource enumData}}" SelectedValueBinding="{Binding Type}"/>
             </DataGrid.Columns>
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander Background="{StaticResource Light}">
+                                            <Expander.Header>
+                                                <Grid HorizontalAlignment="{Binding HorizontalAlignment,Mode=OneWayToSource,RelativeSource={RelativeSource AncestorType=ContentPresenter, Mode=FindAncestor}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <ContentPresenter Grid.Column="0" HorizontalAlignment="Stretch" Content="{Binding Name}"/>
+                                                    <Button Grid.Column="1" HorizontalAlignment="Stretch" Content="X" Command="{Binding DataContext.RemoveMarksCommand, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}}" CommandParameter="{Binding Items}"/>
+                                                </Grid>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
         </DataGrid>
 
         <Border Background="{StaticResource Main}" Grid.Row="0">
@@ -59,4 +93,5 @@
             </StackPanel>
         </Border>
     </Grid>
+
 </UserControl>

@@ -17,14 +17,14 @@ namespace Enrolle.Services
             this.dataContext = dataContext;
         }
 
-        public void Add(Subject item)
+        public async Task AddAsync(Subject item)
         {
-            dataContext.Subjects.Add(item);
+            await dataContext.Subjects.AddAsync(item);
         }
 
-        public Subject? Get(int id)
+        public async Task AddRangeAsync(IEnumerable<Subject> items)
         {
-            return dataContext.Subjects.Find(id);
+            await dataContext.Subjects.AddRangeAsync(items);
         }
 
         public IEnumerable<Subject> GetAll()
@@ -32,9 +32,9 @@ namespace Enrolle.Services
             return dataContext.Subjects.Local.ToObservableCollection();
         }
 
-        public void Load()
+        public async Task LoadAsync()
         {
-            dataContext.Subjects.Load();
+            await dataContext.Subjects.LoadAsync();
         }
 
         public void Remove(Subject item)
@@ -42,9 +42,9 @@ namespace Enrolle.Services
             dataContext.Subjects.Remove(item);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }

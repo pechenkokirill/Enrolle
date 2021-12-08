@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Enrolle.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,14 +15,36 @@ namespace Enrolle.ViewModels
         private readonly IRepository<Applicant> applicantsRepository;
         private readonly IRepository<Benefit> benefitsRepository;
 
-        public IEnumerable<Applicant> Applicants => new ObservableCollection<Applicant>(applicantsRepository.GetAll());
-        public IEnumerable<Benefit> Benefits => new ObservableCollection<Benefit>(benefitsRepository.GetAll());
-        public ApplicantBenefitsViewModel(IRepository<ApplicantBenefit> repository, IRepository<Applicant> applicantsRepository, IRepository<Benefit> benefitsRepository) : base(repository)
+        public ApplicantBenefitsViewModel(IRepository<Benefit> benefitsRepository, IRepository<Applicant> applicantsRepository, IRepository<ApplicantBenefit> repository, BusyStore busyStore) : base(repository, busyStore)
         {
-            this.applicantsRepository = applicantsRepository;
-            this.applicantsRepository.Load();
             this.benefitsRepository = benefitsRepository;
-            this.benefitsRepository.Load();
+            this.applicantsRepository = applicantsRepository;
         }
+
+        public static ApplicantBenefitsViewModel BuildAndLoad(IServiceProvider serviceProvider)
+        {
+            ApplicantBenefitsViewModel applicantBenefitsViewModel = new ApplicantBenefitsViewModel(
+                serviceProvider.GetRequiredService<IRepository<Benefit>>(),
+                serviceProvider.GetRequiredService<IRepository<Applicant>>(),
+                serviceProvider.GetRequiredService<IRepository<ApplicantBenefit>>(),
+                serviceProvider.GetRequiredService<BusyStore>()
+            );
+
+            applicantBenefitsViewModel.InitializeCollectionCommand.Execute(null);
+
+            return applicantBenefitsViewModel;
+        }
+
+        protected override async Task InitializeAsync()
+        {
+            await benefitsRepository.LoadAsync();
+            Benefits = benefitsRepository.GetAll();
+            await applicantsRepository.LoadAsync();
+            Applicants = applicantsRepository.GetAll();
+        }
+
+        public IEnumerable<Applicant>? Applicants { get; set; } 
+        public IEnumerable<Benefit>? Benefits { get; set; }
+
     }
 }

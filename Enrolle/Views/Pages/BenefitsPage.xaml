@@ -13,7 +13,6 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding Collection}" ColumnWidth="*" AutoGenerateColumns="False">
-
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Дополнительные баллы" Binding="{Binding AdditionalPoints}"/>

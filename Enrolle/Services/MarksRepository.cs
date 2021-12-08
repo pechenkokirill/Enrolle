@@ -17,14 +17,14 @@ namespace Enrolle.Services
             this.dataContext = dataContext;
         }
 
-        public void Add(Mark item)
+        public async Task AddAsync(Mark item)
         {
-            dataContext.Marks.Add(item);
+            await dataContext.Marks.AddAsync(item);
         }
 
-        public Mark? Get(int id)
+        public async Task AddRangeAsync(IEnumerable<Mark> items)
         {
-            return dataContext.Marks.Find(id);
+            await dataContext.Marks.AddRangeAsync(items);
         }
 
         public IEnumerable<Mark> GetAll()
@@ -32,19 +32,20 @@ namespace Enrolle.Services
             return dataContext.Marks.Local.ToObservableCollection();
         }
 
-        public void Load()
+        public async Task LoadAsync()
         {
-            dataContext.Marks.Include(x => x.Applicant).Include(x => x.Subject).Load();
+            await dataContext.Marks.Include(x => x.Applicant).ThenInclude(x => x.Marks).Include(x => x.Subject).LoadAsync();
         }
 
         public void Remove(Mark item)
         {
             dataContext.Marks.Remove(item);
+            item.Applicant.Marks.Remove(item);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }

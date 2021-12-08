@@ -59,5 +59,42 @@
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
+
+        <Border Grid.Row="1">
+            <Border.Background>
+                <SolidColorBrush Color="Black" Opacity="0.85"/>
+            </Border.Background>
+            <Border Background="{StaticResource Main}" CornerRadius="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Margin="20">
+                    <TextBlock Foreground="White" Text="Loading" HorizontalAlignment="Center"/>
+                    <ProgressBar Height="5" Width="56" IsIndeterminate="True"/>
+                </StackPanel>
+            </Border>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="IsHitTestVisible" Value="True"/>
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="1" Duration="0:0:0.2" Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
     </Grid>
 </Window>

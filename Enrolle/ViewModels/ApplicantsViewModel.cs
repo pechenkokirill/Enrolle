@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Enrolle.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,11 +13,29 @@ namespace Enrolle.ViewModels
     public class ApplicantsViewModel : TableEditBaseViewModel<Applicant>
     {
         private readonly IRepository<Specialization> specializationRepo;
-        public IEnumerable<Specialization> Specializations => new ObservableCollection<Specialization>(specializationRepo.GetAll());
-        public ApplicantsViewModel(IRepository<Applicant> repository, IRepository<Specialization> specializationRepo) : base(repository)
+        public IEnumerable<Specialization>? Specializations { get; set; }
+        public ApplicantsViewModel(IRepository<Specialization> specializationRepo, IRepository<Applicant> repository, BusyStore busyStore) : base(repository, busyStore)
         {
             this.specializationRepo = specializationRepo;
-            this.specializationRepo.Load();
         }
+
+        public static ApplicantsViewModel BuildAndLoad(IServiceProvider serviceProvider)
+        {
+            ApplicantsViewModel applicantsViewModel = new ApplicantsViewModel(
+                serviceProvider.GetRequiredService<IRepository<Specialization>>(),    
+                serviceProvider.GetRequiredService<IRepository<Applicant>>(),    
+                serviceProvider.GetRequiredService<BusyStore>()
+            );
+
+            applicantsViewModel.InitializeCollectionCommand.Execute(null);
+            return applicantsViewModel;
+        }
+
+        protected override async Task InitializeAsync()
+        {
+            await specializationRepo.LoadAsync();   
+            Specializations = specializationRepo.GetAll();
+        }
+
     }
 }

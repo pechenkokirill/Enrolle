@@ -1,4 +1,7 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Enrolle.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -11,8 +14,25 @@ namespace Enrolle.ViewModels
 {
     public class SpecialtiesViewModel : TableEditBaseViewModel<Specialization>
     {
-        public SpecialtiesViewModel(IRepository<Specialization> repository) : base(repository)
+        public SpecialtiesViewModel(IRepository<Specialization> repository, BusyStore busyStore) : base(repository, busyStore)
         {
+        }
+
+        public static SpecialtiesViewModel BuildAndLoad(IServiceProvider serviceProvider)
+        {
+            SpecialtiesViewModel specialtiesViewModel = new SpecialtiesViewModel(
+                    serviceProvider.GetRequiredService<IRepository<Specialization>>(),
+                    serviceProvider.GetRequiredService<BusyStore>()
+            );
+
+            specialtiesViewModel.InitializeCollectionCommand.Execute(null);
+
+            return specialtiesViewModel;
+        }
+
+        protected override Task InitializeAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }

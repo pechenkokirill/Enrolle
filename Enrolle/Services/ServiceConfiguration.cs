@@ -17,25 +17,27 @@ namespace Enrolle.Services
         public void ConfigureServices(HostBuilderContext context, IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContextFactory<DataContext, DataContextSqLiteFactory>();
-            serviceCollection.AddSingleton<DataContext>(x => x.GetRequiredService<IDbContextFactory<DataContext>>().CreateDbContext());
+            serviceCollection.AddSingleton<DataContext>(s => s.GetRequiredService<IDbContextFactory<DataContext>>().CreateDbContext());
             //Services
             serviceCollection.AddSingleton<INavigation, NavigationService>();
-            serviceCollection.AddSingleton<IRepository<Specialization>, SpecialtiesRepository>();
-            serviceCollection.AddSingleton<IRepository<Subject>, SubjectsRepository>();
-            serviceCollection.AddSingleton<IRepository<Benefit>, BenefitsRepository>();
-            serviceCollection.AddSingleton<IRepository<ApplicantBenefit>, ApplicantBenefitsRepository>();
-            serviceCollection.AddSingleton<IRepository<Applicant>, ApplicantsRepository>();
-            serviceCollection.AddSingleton<IRepository<Mark>, MarksRepository>();
+            serviceCollection.AddTransient<IRepository<Specialization>, SpecialtiesRepository>();
+            serviceCollection.AddTransient<IRepository<Subject>, SubjectsRepository>();
+            serviceCollection.AddTransient<IRepository<Benefit>, BenefitsRepository>();
+            serviceCollection.AddTransient<IRepository<ApplicantBenefit>, ApplicantBenefitsRepository>();
+            serviceCollection.AddTransient<IRepository<Applicant>, ApplicantsRepository>();
+            serviceCollection.AddTransient<IRepository<Mark>, MarksRepository>();
+            //States
+            serviceCollection.AddSingleton<BusyStore>();
             //ViewModels
             serviceCollection.AddSingleton<MainViewModel>();
-            serviceCollection.AddTransient<MainPageViewModel>();
-            serviceCollection.AddTransient<TablesChooseViewModel>();
-            serviceCollection.AddTransient<SpecialtiesViewModel>();
-            serviceCollection.AddTransient<SubjectsViewModel>();
-            serviceCollection.AddTransient<BenefitsViewModel>();
-            serviceCollection.AddTransient<ApplicantBenefitsViewModel>();
-            serviceCollection.AddTransient<ApplicantsViewModel>();
-            serviceCollection.AddTransient<MarksViewModel>();
+            serviceCollection.AddScoped<MainPageViewModel>();
+            serviceCollection.AddScoped<TablesChooseViewModel>();
+            serviceCollection.AddScoped<SpecialtiesViewModel>(s => SpecialtiesViewModel.BuildAndLoad(s));
+            serviceCollection.AddScoped<SubjectsViewModel>(s => SubjectsViewModel.BuildAndLoad(s));
+            serviceCollection.AddScoped<BenefitsViewModel>(s => BenefitsViewModel.BuildAndLoad(s));
+            serviceCollection.AddScoped<ApplicantBenefitsViewModel>(s => ApplicantBenefitsViewModel.BuildAndLoad(s));
+            serviceCollection.AddScoped<ApplicantsViewModel>(s => ApplicantsViewModel.BuildAndLoad(s));
+            serviceCollection.AddScoped<MarksViewModel>(s => MarksViewModel.BuildAndLoad(s));
             serviceCollection.AddTransient<MarksAddViewModel>();
         }
     }

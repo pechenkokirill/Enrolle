@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Enrolle.Views.Pages"
+             xmlns:local="clr-namespace:Enrolle.Views.Pages" xmlns:converters="clr-namespace:Enrolle.Converters" xmlns:validation="clr-namespace:Enrolle.Validation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -39,17 +39,27 @@
                 <ComboBox SelectedIndex="0" SelectedValue="{Binding Applicant}" ItemsSource="{Binding Applicants}"/>
             </StackPanel>
 
-            <DataGrid ItemsSource="{Binding Marks}" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*">
+            <DataGrid ItemsSource="{Binding Marks}" Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False" ColumnWidth="*">
+                <DataGrid.Resources>
+                    <converters:MarkConverter x:Key="markConverter"/>
+                    <Style x:Key="subjectsColumn" TargetType="ComboBox">
+                        <Setter Property="ItemsSource" Value="{Binding DataContext.Subjects,RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}}"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.RowValidationRules>
+                    <validation:NotNullValidator PropertyName="Subject" HeaderName="Предмет" ValidationStep="CommittedValue"/>
+                </DataGrid.RowValidationRules>
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Предмет" IsReadOnly="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentPresenter Content="{Binding Subject}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Отметка" Binding="{Binding Value}"/>
-                    <DataGridComboBoxColumn Header="Тип" ItemsSource="{Binding Source={StaticResource enumData}}" SelectedItemBinding="{Binding Type}"/>
+                    <DataGridComboBoxColumn Header="Предмет" SelectedValueBinding="{Binding Subject}">
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style BasedOn="{StaticResource subjectsColumn}" TargetType="ComboBox"/>
+                        </DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style BasedOn="{StaticResource subjectsColumn}" TargetType="ComboBox"/>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
+                    <DataGridTextColumn Header="Отметка" Binding="{Binding Value, Converter={StaticResource markConverter}}"/>
+                    <DataGridComboBoxColumn Header="Тип" ItemsSource="{Binding Source={StaticResource enumData}}" SelectedValueBinding="{Binding Type}"/>
                 </DataGrid.Columns>
             </DataGrid>
 

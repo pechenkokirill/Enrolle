@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Enrolle.Models"
-             xmlns:local="clr-namespace:Enrolle.Views.Pages"
+             xmlns:local="clr-namespace:Enrolle.Views.Pages" xmlns:validation="clr-namespace:Enrolle.Validation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -22,6 +22,10 @@
                     <Setter Property="ItemsSource" Value="{Binding DataContext.Benefits,RelativeSource={RelativeSource AncestorType=DataGrid,Mode=FindAncestor}}"/>
                 </Style>
             </DataGrid.Resources>
+            <DataGrid.RowValidationRules>
+                <validation:NotNullValidator PropertyName="Applicant" HeaderName="Аббитуриенты" ValidationStep="CommittedValue"/>
+                <validation:NotNullValidator PropertyName="Benefit" HeaderName="Льготы" ValidationStep="CommittedValue"/>
+            </DataGrid.RowValidationRules>
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Аббитуриенты" SelectedValueBinding="{Binding Applicant}">
                     <DataGridComboBoxColumn.ElementStyle>
